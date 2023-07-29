@@ -62,10 +62,10 @@
 		9D968F2A2A7544A300400E21 /* AnimalQuizz4.0 */ = {
 			isa = PBXGroup;
 			children = (
-				9D968F432A7545D700400E21 /* Models */,
-				9D968F412A7544FD00400E21 /* App */,
 				9D968F422A75450B00400E21 /* ViewControllers */,
+				9D968F432A7545D700400E21 /* Models */,
 				9D968F402A7544EA00400E21 /* StoryBoards */,
+				9D968F412A7544FD00400E21 /* App */,
 				9D968F3F2A7544C700400E21 /* Resourses */,
 			);
 			path = AnimalQuizz4.0;
