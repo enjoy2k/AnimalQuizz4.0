@@ -7,13 +7,8 @@
 
 import UIKit
 
-class InitialViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+class IntroductionViewController: UIViewController {
     
-    }
-
-
+    @IBAction func unwind(for unwindSegue: UIStoryboardSegue) {}
 }
 
