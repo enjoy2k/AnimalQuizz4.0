@@ -9,7 +9,13 @@ import UIKit
 
 class ResultViewController: UIViewController {
 
+//    Передать массив с ответами
+//    Определить наиболле часто встречающееся животное
+//    Отобразить результаты по этому зверю
+//    Избавиться от кнопи back
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
 }

@@ -21,7 +21,13 @@ class QuestionsViewController: UIViewController {
     
     @IBOutlet var rangedStackView: UIStackView!
     @IBOutlet var rangedLabels: [UILabel]!
-    @IBOutlet var rangedSlider: UISlider!
+    @IBOutlet var rangedSlider: UISlider! {
+        didSet {
+            let answwerCout = Float(currentAnswers.count - 1)
+            rangedSlider.maximumValue = answwerCout
+            rangedSlider.value = answwerCout / 2    // Сделал бегунок по центру
+        }
+    }
     
     private let questions = Question.getQuestions()
     private var answersChosen: [Answer] = []
@@ -36,6 +42,10 @@ class QuestionsViewController: UIViewController {
         updateUI()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+    }
+    
     
     @IBAction func singleAnswerButtonPressed(_ sender: UIButton) {
         guard let buttonIndex = singleButtons.firstIndex(of: sender) else { return }
@@ -46,9 +56,18 @@ class QuestionsViewController: UIViewController {
     }
     
     @IBAction func multipleAnswerButtonPressed(_ sender: Any) {
+        for (multipleSwitch, answer) in zip(multipleSwitches, currentAnswers) {
+            if multipleSwitch.isOn {
+                answersChosen.append(answer)
+            }
+        }
+        nextQuestion()
     }
     
     @IBAction func rangedAnswerButtonPressed(_ sender: Any) {
+        let index = lrintf(rangedSlider.value)
+        answersChosen.append(currentAnswers[index])
+        nextQuestion()
     }
     
 }
@@ -83,8 +102,8 @@ extension QuestionsViewController {
     private func showCurrentAnswers(for type: ResponseType) {
         switch type {
         case .single: showSingleStackView(with: currentAnswers)
-        case .multiple: break
-        case .ranged: break
+        case .multiple: showMultipleStackView(with: currentAnswers)
+        case .ranged: showRangedStackView(with: currentAnswers)
         }
     }
     
@@ -95,8 +114,32 @@ extension QuestionsViewController {
             button.setTitle(answer.title, for: .normal)
         }
     }
+    private func showMultipleStackView(with answers: [Answer]) {
+        multipleStackView.isHidden.toggle()
+        
+        for (label, answer) in zip(multipleLabels, answers) {
+            label.text = answer.title
+        }
+    }
+    private func showRangedStackView(with answers: [Answer]) {
+        rangedStackView.isHidden.toggle()
+        
+        rangedLabels.first?.text = answers.first?.title
+        rangedLabels.last?.text = answers.last?.title
+    }
     
-    private func
+    private func nextQuestion() {
+        questionIndex += 1
+        
+        if questionIndex < questions.count {
+            updateUI()
+            return
+        }
+        performSegue(withIdentifier: "showResult", sender: nil)
+    }
 }
 
-// Остановился на 1.52.20
+/* ДЗ:
+Убрать кнопку back
+Передать на resultVC массив answerChosen. Для этого нужно реализовать prepare()
+*/
