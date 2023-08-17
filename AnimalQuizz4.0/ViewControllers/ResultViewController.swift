@@ -18,30 +18,29 @@ class ResultViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: true)
         
-        
-        if let totSmiyZver = mostFrequentAnimal(in: gotenAnswers) {
-            animalTitleLabel.text = "Вы - \(totSmiyZver.rawValue)"
-            animalDescriptionLabel.text = totSmiyZver.definition
-        }
+        updateUI(wirh: )
     }
     
-    private func mostFrequentAnimal(in answers: [Answer]) -> Animal? {
-        var slovarSOtvetami: [Animal : Int] = [:]
+    private func updateResult() {
         
-        for animal in gotenAnswers {
-            slovarSOtvetami[animal.animal, default: 0] += 1
-        }
+        var frequencyOfAnimals: [Animal: Int] = [:]
+        let animals = gotenAnswers.map { $0.animal }
         
-        var mostFrequentAnimal: Animal?
-        var highestCount = 0
-        
-        for (animal, count) in slovarSOtvetami {
-            if count > highestCount {
-                mostFrequentAnimal = animal
-                highestCount = count
+        for animal in animals {
+            if let animalTypeCount = frequencyOfAnimals[animal] {
+                frequencyOfAnimals.updateValue(animalTypeCount + 1, forKey: animal)
+            } else {
+                frequencyOfAnimals[animal] = 1
             }
         }
-        return mostFrequentAnimal
+        
+        let sortedFrequencyOfAnimals = frequencyOfAnimals.sorted { $0.value > $1.value }
+        guard let mostFrequencyAnimal = sortedFrequencyOfAnimals.first?.key else { return }
+    }
+    
+    private func updateUI(wirh animal: Animal) {
+        animalTitleLabel.text = "Вы - \(animal.rawValue)"
+        animalDescriptionLabel.text = animal.definition
     }
 }
-// Привет
+
