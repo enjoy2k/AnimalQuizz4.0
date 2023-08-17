@@ -44,3 +44,4 @@ class ResultViewController: UIViewController {
         return mostFrequentAnimal
     }
 }
+// Привет
